@@ -1,52 +1,52 @@
-所需环境
+Required environment
 ========
 
-需要PHP版本不低于5.3，只需要安装PHP的Cli即可，无需安装PHP-FPM、nginx、apache
+Need PHP version not less than 5.3, just need to install PHP Cli, no need to install PHP-FPM, nginx, apache
 
 
-示例
+Example
 ========
 [Live Demo](http://www.workerman.net:55757/)
 
-安装
+Installation
 =========
-1、下载 或者 ```git clone https://github.com/walkor/workerman-statistics```
+1、Download or run ```git clone https://github.com/walkor/workerman-statistics```
 
-2、命令行运行 ```composer install```
+2、Run ```composer install```
 
-启动停止
+Starting and Stopping
 =========
 
-以ubuntu为例
+Take ubuntu as an example
 
-启动  
+start up 
 `php start.php start -d`
 
-重启启动  
+Restart boot
 `php start.php restart`
 
-平滑重启/重新加载配置  
+Smooth restart/reload configuration
 `php start.php reload`
 
-查看服务状态  
+View service status
 `php start.php status`
 
-停止  
+stop 
 `php start.php stop`
 
-Windows系统上运行
+Running on a Windows system
 ======
-1、Windows平台需要将Workerman目录替换成[Windows版本的Workerman](https://github.com/walkor/workerman-for-win)
+1、The Windows platform needs to replace the Workerman directory with the [Windows version of Workerman](https://github.com/walkor/workerman-for-win)
 
-2、运行start_for_win.bat
+2, run start_for_win.bat
 
-[Windows版本Workerman相关参见这里](http://www.workerman.net/windows)
+[For Windows version of Workerman, see here](http://www.workerman.net/windows)
 
-权限验证
+Permission Validation
 =======
 
-  *  管理员用户名密码默认都为空，即不需要登录就可以查看监控数据
-  *  如果需要登录验证，在applications/Statistics/Config/Config.php里面设置管理员密码
+  * The administrator username and password are empty by default, that is, you can view the monitoring data without logging in.
+  * If login authentication is required, set the administrator password in applications/Statistics/Config/Config.php
 
 
- [更多请访问www.workerman.net](http://www.workerman.net/workerman-statistics)
+ [More please visit www.workerman.net](http://www.workerman.net/workerman-statistics)
