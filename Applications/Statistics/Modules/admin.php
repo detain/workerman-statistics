@@ -21,20 +21,20 @@ function admin()
     switch($act)
     {
         case 'detect_server':
-            // 创建udp socket
+			// create udp socket
             $socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
             socket_set_option($socket, SOL_SOCKET, SO_BROADCAST, 1);
             $buffer = json_encode(array('cmd'=>'REPORT_IP'))."\n";
-            // 广播
+			// broadcast
             socket_sendto($socket, $buffer, strlen($buffer), 0, '255.255.255.255', \Statistics\Config::$ProviderPort);
-            // 超时相关
+			// timeout related
             $time_start = microtime(true);
             $global_timeout = 1;
             $ip_list = array();
             $recv_timeout = array('sec'=>0,'usec'=>8000);
             socket_set_option($socket,SOL_SOCKET,SO_RCVTIMEO,$recv_timeout);
             
-            // 循环读数据
+			// cyclic read data
             while(microtime(true) - $time_start < $global_timeout)
             {
                 $buf = $host = $port = '';
@@ -44,7 +44,7 @@ function admin()
                 }
             }
             
-            // 过滤掉已经保存的ip
+			// Filter out the saved ips
             $count = 0;
             foreach($ip_list as $ip)
             {
@@ -55,12 +55,12 @@ function admin()
                 }
             }
             $action = 'add_to_server_list';
-            $notice_msg = "探测到{$count}个新数据源";
+			$notice_msg = "Detected{$count}New Data Sources";
             break;
         case 'add_to_server_list':
             if(empty($_POST['ip_list']))
             {
-                $err_msg = "保存的ip列表为空";
+				$err_msg = "Save ip list is empty";
                 break;
             }
             $ip_list = explode("\n", $_POST['ip_list']);
@@ -75,7 +75,7 @@ function admin()
                     }
                 }
             }
-            $suc_msg = "添加成功";
+			$suc_msg = "Add Success";
             foreach(\Statistics\Lib\Cache::$ServerIpList as $ip)
             {
                 $ip_list_str .= $ip."\r\n";
@@ -85,7 +85,7 @@ function admin()
         case 'save_server_list':
             if(empty($_POST['ip_list']))
             {
-                $err_msg = "保存的ip列表为空";
+				$err_msg = "Save ip list is empty";
                 break;
             }
             \Statistics\Lib\Cache::$ServerIpList = array();
@@ -101,7 +101,7 @@ function admin()
                     }
                 }
             }
-            $suc_msg = "保存成功";
+			$suc_msg = "SaveSuccess";
             foreach(\Statistics\Lib\Cache::$ServerIpList as $ip)
             {
                 $ip_list_str .= $ip."\r\n";

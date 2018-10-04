@@ -31,7 +31,7 @@ function main($module, $interface, $date, $start_time, $offset)
     
     $code_map = array();
     $data = formatSt($all_st_str, $date, $code_map);
-    $interface_name = '整体';
+	$interface_name = 'Overall';
     $success_series_data = $fail_series_data = $success_time_series_data = $fail_time_series_data = array();
     $total_count = $fail_count = 0;
     foreach($data as $time_point=>$item)
@@ -54,9 +54,9 @@ function main($module, $interface, $date, $start_time, $offset)
     $success_time_series_data = implode(',', $success_time_series_data);
     $fail_time_series_data = implode(',', $fail_time_series_data);
     
-    // 总体成功率
+	// 总体Success rate
     $global_rate =  $total_count ? round((($total_count - $fail_count)/$total_count)*100, 4) : 100;
-    // 返回码分布
+	// Return Code Distribution
     $code_pie_data = '';
     $code_pie_array = array(); 
     unset($code_map[0]);
@@ -69,7 +69,7 @@ function main($module, $interface, $date, $start_time, $offset)
         $total_item_count = array_sum($code_map);
         foreach($code_map as $code=>$count)
         {
-            $code_pie_array[] = "[\"$code:{$count}个\", ".round($count*100/$total_item_count, 4)."]";
+			$code_pie_array[] = "[\"$code:{$count} One\", ".round($count*100/$total_item_count, 4)."]";
         }
         $code_pie_data = implode(',', $code_pie_array);
     }
@@ -77,7 +77,7 @@ function main($module, $interface, $date, $start_time, $offset)
     unset($_GET['start_time'], $_GET['end_time'], $_GET['date'], $_GET['fn']);
     $query = http_build_query($_GET);
     
-    // 删除末尾0的记录
+	// Delete the record at the end 0
     if($today == $date)
     {
         while(!empty($data) && ($item = end($data)) && $item['total_count'] == 0 && ($key = key($data)) &&  $time_now < $key)
@@ -150,7 +150,7 @@ function main($module, $interface, $date, $start_time, $offset)
     
     if( \Statistics\Lib\Cache::$lastFailedIpArray)
     {
-        $err_msg = '<strong>无法从以下数据源获取数据:</strong>';
+		$err_msg = '<strong>Unable to get data from the following data sources:</strong>';
         foreach (\Statistics\Lib\Cache::$lastFailedIpArray as $ip)
         {
             $err_msg .= $ip.'::'.\Statistics\Config::$ProviderPort . '&nbsp;';
@@ -160,8 +160,8 @@ function main($module, $interface, $date, $start_time, $offset)
     if(empty(\Statistics\Lib\Cache::$ServerIpList))
     {
         $notice_msg = <<<EOT
-<h4>数据源为空</h4>
-您可以 <a href="/?fn=admin&act=detect_server" class="btn" type="button"><strong>探测数据源</strong></a>或者<a href="/?fn=admin" class="btn" type="button"><strong>添加数据源</strong></a>
+<h4>The data source is empty</h4>
+You can <a href="/?fn=admin&act=detect_server" class="btn" type="button"><strong>Probe Data Source</strong></a>or<a href="/?fn=admin" class="btn" type="button"><strong>Add a Data Source</strong></a>
 EOT;
     }
 
@@ -188,7 +188,7 @@ function multiRequestStAndModules($module, $interface, $date)
         $body_data = json_decode(trim($buf), true);
         $statistic_data = isset($body_data['statistic']) ? $body_data['statistic'] : '';
         $modules_data = isset($body_data['modules']) ? $body_data['modules'] : array();
-        // 整理modules
+		// Organize modules
         foreach($modules_data as $mod => $interfaces)
         {
             if(!isset(\Statistics\Lib\Cache::$modulesDataCache[$mod]))
@@ -209,7 +209,7 @@ function formatSt($str, $date, &$code_map)
     // time:[suc_count:xx,suc_cost_time:xx,fail_count:xx,fail_cost_time:xx]
     $st_data = $code_map = array();
     $st_explode = explode("\n", $str);
-    // 汇总计算
+	// Summary calculation
     foreach($st_explode as $line)
     {
         // line = IP time suc_count suc_cost_time fail_count fail_cost_time code_json
@@ -246,11 +246,11 @@ function formatSt($str, $date, &$code_map)
             }
         }
     }
-    // 按照时间排序
+	// Sort by Time
     ksort($st_data);
     // time => [total_count:xx,suc_count:xx,suc_avg_time:xx,fail_count:xx,fail_avg_time:xx,percent:xx]
     $data = array();
-    // 计算成功率 耗时
+	// Calculate the success rate
     foreach($st_data as $time_line=>$item)
     {
         $data[$time_line] = array(

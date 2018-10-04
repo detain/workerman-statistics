@@ -3,28 +3,28 @@
 		<div class="col-md-12 column">
 			<ul class="nav nav-tabs">
 				<li>
-					<a href="/">概述</a>
+					<a href="/">Overview</a>
 				</li>
 				<li>
-					<a href="/?fn=statistic">监控</a>
+					<a href="/?fn=statistic">Monitor</a>
 				</li>
 				<li class="active" >
-					<a href="/?fn=logger">日志</a>
+					<a href="/?fn=logger">Log</a>
 				</li>
 				<li class="disabled">
-					<a href="#">告警</a>
+					<a href="#">Alarm</a>
 				</li>
 				<li class="dropdown pull-right">
-					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">其它<strong class="caret"></strong></a>
+					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Other<strong class="caret"></strong></a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="/?fn=admin&act=detect_server">探测数据源</a>
+							<a href="/?fn=admin&act=detect_server">Probe Data Source</a>
 						</li>
 						<li>
-							<a href="/?fn=admin">数据源管理</a>
+							<a href="/?fn=admin">Data Source management</a>
 						</li>
 						<li>
-							<a href="/?fn=setting">设置</a>
+							<a href="/?fn=setting">Settings</a>
 						</li>
 					</ul>
 				</li>

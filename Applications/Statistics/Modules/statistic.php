@@ -166,7 +166,7 @@ function statistic($module, $interface, $date, $start_time, $offset)
         
         if( \Statistics\Lib\Cache::$lastFailedIpArray)
         {
-            $err_msg = '<strong>无法从以下数据源获取数据:</strong>';
+			$err_msg = '<strong>Unable to get data from the following data sources:</str>';
             foreach (\Statistics\Lib\Cache::$lastFailedIpArray as $ip)
             {
                 $err_msg .= $ip.'::'.\Statistics\Config::$ProviderPort . '&nbsp;';

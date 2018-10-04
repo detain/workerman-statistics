@@ -23,7 +23,7 @@ $statistic_worker = new StatisticWorker("Statistic://0.0.0.0:55656");
 $statistic_worker->transport = 'udp';
 $statistic_worker->name = 'StatisticWorker';
 
-// 如果不是在根目录启动，则运行runAll方法
+// Run the runAll method if it is not started in the root directory
 if(!defined('GLOBAL_START'))
 {
     Worker::runAll();

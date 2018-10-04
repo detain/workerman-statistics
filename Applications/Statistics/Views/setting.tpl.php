@@ -3,28 +3,28 @@
 		<div class="col-md-12 column">
 			<ul class="nav nav-tabs">
 				<li>
-					<a href="/">概述</a>
+					<a href="/">Overview</a>
 				</li>
 				<li>
-					<a href="/?fn=statistic">监控</a>
+					<a href="/?fn=statistic">Monitor</a>
 				</li>
 				<li>
-					<a href="/?fn=logger">日志</a>
+					<a href="/?fn=logger">Log</a>
 				</li>
 				<li class="disabled">
-					<a href="#">告警</a>
+					<a href="#">Alarm</a>
 				</li>
 				<li class="dropdown pull-right">
-					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">其它<strong class="caret"></strong></a>
+					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Other<strong class="caret"></strong></a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="/?fn=admin&act=detect_server">探测数据源</a>
+							<a href="/?fn=admin&act=detect_server">Probe Data Source</a>
 						</li>
 						<li>
-							<a href="/?fn=admin">数据源管理</a>
+							<a href="/?fn=admin">Data Source management</a>
 						</li>
 						<li>
-							<a href="/?fn=setting">设置</a>
+							<a href="/?fn=setting">Settings</a>
 						</li>
 					</ul>
 				</li>
@@ -35,10 +35,10 @@
 		<div class="col-md-12 column">
 			<ul class="breadcrumb">
 				<li>
-					<a href="/?fn=setting">设置</a> <span class="divider">/</span>
+					<a href="/?fn=setting">Settings</a> <span class="divider">/</span>
 				</li>
 				<li class="active">
-					选项列表
+					Option List
 				</li>
 			</ul>
 			<?php if($suc_msg){?>
@@ -65,14 +65,14 @@
 		<div class="col-md-6 column">
 			<form class="form-horizontal" role="form" action="/?fn=setting&act=save" method="post">
 				<div class="form-group">
-					 <label class="col-sm-3 control-label">数据源探测端口</label>
+					 <label class="col-sm-3 control-label">Data Source DetectionPort</label>
 					<div class="col-sm-9">
 						<input class="form-control" name="detect_port" value="<?php echo $detect_port;?>"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-9">
-						 <button type="submit" class="btn btn-default">保存</button>
+						 <button type="submit" class="btn btn-default">Save</button>
 					</div>
 				</div>
 			</form>

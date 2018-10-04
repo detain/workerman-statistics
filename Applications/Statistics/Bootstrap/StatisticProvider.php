@@ -21,56 +21,56 @@ use Statistics\Config;
 class StatisticProvider extends Worker
 {
     /**
-     *  最大日志buffer，大于这个值就写磁盘
+	 *  maximumLogbuffer，Greater than this OneValue is written to disk
      * @var integer
      */
     const MAX_LOG_BUFFER_SIZE = 1024000;
     
     /**
-     * 多长时间写一次数据到磁盘
+	 * How often do you write data to disk?
      * @var integer
      */
     const WRITE_PERIOD_LENGTH = 60;
     
     /**
-     * 多长时间清理一次老的磁盘数据
+	 * How often do you clean up old disk data?
      * @var integer
      */
     const CLEAR_PERIOD_LENGTH = 86400;
     
     /**
-     * 数据多长时间过期
+	 * How long does the data expire?
      * @var integer
      */
     const EXPIRED_TIME = 1296000;
     
     /**
-     * 统计数据 
+	 * Statistical data
      * ip=>modid=>interface=>['code'=>[xx=>count,xx=>count],'suc_cost_time'=>xx,'fail_cost_time'=>xx, 'suc_count'=>xx, 'fail_count'=>xx]
      * @var array
      */
     protected $statisticData = array();
     
     /**
-     * 日志的buffer
+	 * Log buffer
      * @var string
      */
     protected $logBuffer = '';
     
     /**
-     * 放统计数据的目录
+	 * a table of statistics
      * @var string
      */
     protected $statisticDir = 'statistic/statistic/';
     
     /**
-     * 存放统计日志的目录
+	 * Directory for storing statistics Log
      * @var string
      */
     protected $logDir = 'statistic/log/';
     
     /**
-     * 用于接收广播的udp socket
+	 * Udp socket for receiving broadcasts
      * @var resource
      */
     protected $broadcastSocket = null;
@@ -86,7 +86,7 @@ class StatisticProvider extends Worker
     }
     
     /**
-     * 处理请求统计
+	 * Processing request statistics
      * @param string $recv_buffer
      */
     public function onMessage($connection, $recv_buffer)
@@ -118,7 +118,7 @@ class StatisticProvider extends Worker
     }
     
     /**
-     * 获取模块
+	 * Acquisition module
      * @return array
      */
     public function getModules($current_module = '')
@@ -150,7 +150,7 @@ class StatisticProvider extends Worker
     }
     
     /**
-     * 获得统计数据
+	 * Get statistics
      * @param string $module
      * @param string $interface
      * @param int $date
@@ -162,7 +162,7 @@ class StatisticProvider extends Worker
         {
             return '';
         }
-        // log文件
+		// Log file
         $log_file = Config::$dataPath . $this->statisticDir."{$module}/{$interface}.{$date}";
         
         $handle = @fopen($log_file, 'r');
@@ -171,7 +171,7 @@ class StatisticProvider extends Worker
             return '';
         }
         
-        // 预处理统计数据，每5分钟一行
+		// Preprocess statistics, one line every 5 minutes
         // [time=>[ip=>['suc_count'=>xx, 'suc_cost_time'=>xx, 'fail_count'=>xx, 'fail_cost_time'=>xx, 'code_map'=>[code=>count, ..], ..], ..]
         $statistics_data = array();
         while(!feof($handle))
@@ -222,7 +222,7 @@ class StatisticProvider extends Worker
         fclose($handle);
         ksort($statistics_data);
         
-        // 整理数据
+		// Organize data
         $statistics_str = '';
         foreach($statistics_data as $time => $items)
         {
@@ -236,28 +236,28 @@ class StatisticProvider extends Worker
     
     
     /**
-     * 获取指定日志
+	 * Get the specified Log
      *
      */
     protected function getStasticLog($module, $interface , $start_time = '', $end_time = '', $code = '', $msg = '', $offset='', $count=100)
     {
-        // log文件
+		// Log file
         $log_file = Config::$dataPath . $this->logDir. (empty($start_time) ? date('Y-m-d') : date('Y-m-d', $start_time));
         if(!is_readable($log_file))
         {
             return array('offset'=>0, 'data'=>'');
         }
-        // 读文件
+		// Reading file
         $h = fopen($log_file, 'r');
     
-        // 如果有时间，则进行二分查找，加速查询
+		// If there is time, perform a binary search to speed up the query.
         if($start_time && $offset == 0 && ($file_size = filesize($log_file)) > 1024000)
         {
             $offset = $this->binarySearch(0, $file_size, $start_time-1, $h);
             $offset = $offset < 100000 ? 0 : $offset - 100000;
         }
     
-        // 正则表达式
+		// Regular expression
         $pattern = "/^([\d: \-]+)\t\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\t";
     
         if($module && $module != 'WorkerMan')
@@ -294,13 +294,13 @@ class StatisticProvider extends Worker
          
         $pattern .= '/';
     
-        // 指定偏移位置
+		// Specify offset position
         if($offset > 0)
         {
             fseek($h, (int)$offset-1);
         }
     
-        // 查找符合条件的数据
+		// Find eligible data
         $now_count = 0;
         $log_buffer = '';
     
@@ -310,11 +310,11 @@ class StatisticProvider extends Worker
             {
                 break;
             }
-            // 读1行
+			// Read 1 line
             $line = fgets($h);
             if(preg_match($pattern, $line, $match))
             {
-                // 判断时间是否符合要求
+				// Determine if the time meets the requirements
                 $time = strtotime($match[1]);
                 if($start_time)
                 {
@@ -330,7 +330,7 @@ class StatisticProvider extends Worker
                         break;
                     }
                 }
-                // 收集符合条件的log
+				// Collect eligible logs
                 $log_buffer .= $line;
                 if(++$now_count >= $count)
                 {
@@ -338,12 +338,12 @@ class StatisticProvider extends Worker
                 }
             }
         }
-        // 记录偏移位置
+		// Record offset position
         $offset = ftell($h);
         return array('offset'=>$offset, 'data'=>$log_buffer);
     }
     /**
-     * 日志二分查找法
+	 * Log binary search
      * @param int $start_point
      * @param int $end_point
      * @param int $time
@@ -357,38 +357,38 @@ class StatisticProvider extends Worker
             return $start_point;
         }
         
-        // 计算中点
+		// Calculation midpoint
         $mid_point = (int)(($end_point+$start_point)/2);
     
-        // 定位文件指针在中点
+		// Position the file pointer at the midpoint
         fseek($fd, $mid_point - 1);
     
-        // 读第一行
+		// Read the first line
         $line = fgets($fd);
         if(feof($fd) || false === $line)
         {
             return $start_point;
         }
     
-        // 第一行可能数据不全，再读一行
+		// The first line may not be complete, read another line
         $line = fgets($fd);
         if(feof($fd) || false === $line || trim($line) == '')
         {
             return $start_point;
         }
     
-        // 判断是否越界
+		// Determine whether it is out of bounds
         $current_point = ftell($fd);
         if($current_point>=$end_point)
         {
             return $start_point;
         }
     
-        // 获得时间
+		// Get time
         $tmp = explode("\t", $line);
         $tmp_time = strtotime($tmp[0]);
     
-        // 判断时间，返回指针位置
+		// Judge time, return pointer position
         if($tmp_time > $time)
         {
             return $this->binarySearch($start_point, $current_point, $time, $fd);

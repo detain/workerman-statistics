@@ -40,7 +40,7 @@ $udp_finder->onMessage = function ($connection, $data)
     return $connection->send(json_encode(array('result'=>'ok')));
 };
 
-// 如果不是在根目录启动，则运行runAll方法
+// Run the runAll method if it is not started in the root directory
 if(!defined('GLOBAL_START'))
 {
     Worker::runAll();

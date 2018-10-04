@@ -22,17 +22,17 @@ function setting()
         case 'save':
             if(empty($_POST['detect_port']))
             {
-                $err_msg = "探测端口不能为空";
+				$err_msg = "Probe port cannot be empty";
                 break;
             }
            $detect_port = (int)$_POST['detect_port'];
            
            if($detect_port<0 || $detect_port > 65535)
            {
-               $err_msg = "探测端口不合法";
+			   $err_msg = "Probe port is illegal";
                break;
            }
-            $suc_msg = "保存成功";
+			$suc_msg = "SaveSuccess";
             \Statistics\Config::$ProviderPort = $detect_port;
             saveDetectPortToCache();
             break;

@@ -14,13 +14,13 @@
 namespace Statistics;
 class Config
 {
-    // 数据源端口，会向这个端口发送udp广播获取ip，然后从这个端口以tcp协议获取统计信息
+	// Data source Port, will send udp broadcast to this port to obtain ip, and then get statistics from this port with tcp protocol
     public static $ProviderPort = 55858;
     
-    // 管理员用户名，用户名密码都为空字符串时说明不用验证
+	// The administrator user name and the username and password are all empty strings.
     public static $adminName = '';
     
-    // 管理员密码，用户名密码都为空字符串时说明不用验证
+	// Administrator password, user name and password are all empty strings, no need to verify
     public static $adminPassword = '';
     
     public static $dataPath = '';

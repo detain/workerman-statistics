@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="utf-8">
-  <title>WorkerMan-集群统计与监控</title>
+  <title>WorkerMan-cluster statistics and Monitor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -47,15 +47,15 @@
 				</h4> 
 			</div>
 		<?php }?>
-			<h1>workerman管理员登录</h1>
+			<h1>workerman administrator login</h1>
 			<form role="form" method="POST" action="">
 				<div class="form-group">
-					 <label>用户名</label><input type="text" name="admin_name" class="form-control" />
+					 <label>username</label><input type="text" name="admin_name" class="form-control" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">密码</label><input type="password" name="admin_password"  class="form-control" id="exampleInputPassword1" />
+					 <label for="exampleInputPassword1">password</label><input type="password" name="admin_password"  class="form-control" id="exampleInputPassword1" />
 				</div>
-				<button type="submit" class="btn btn-default">登录</button>
+				<button type="submit" class="btn btn-default">log in</button>
 			</form>
 		</div>
 		<div class="col-md-4 column">

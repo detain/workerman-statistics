@@ -14,6 +14,6 @@
 namespace Statistics\Web;
 class Config
 {
-    // 数据源端口，会向这个端口发送udp广播获取ip，然后从这个端口以tcp协议获取统计信息
+	// Data source Port, will send udp broadcast to this port to obtain ip, and then get statistics from this port with tcp protocol
     public static $ProviderPort = 55858;
 }

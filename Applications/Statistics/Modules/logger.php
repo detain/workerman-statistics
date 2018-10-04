@@ -43,7 +43,7 @@ function logger($module, $interface, $date, $start_time, $offset, $count)
         }
         $log_str = nl2br(str_replace("\n", "\n\n", $log_str));
         $next_page_url = http_build_query($_GET);
-        $log_str .= "</br><center><a href='/?fn=logger&$next_page_url'>下一页</a></center>";
+        $log_str .= "</br><center><a href='/?fn=logger&$next_page_url'>Next Page</a></center>";
 
         include ST_ROOT . '/Views/header.tpl.php';
         include ST_ROOT . '/Views/log.tpl.php';
