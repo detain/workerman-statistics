@@ -29,7 +29,7 @@ function statistic($module, $interface, $date, $start_time, $offset)
 
     $code_map = array();
     $data = formatSt($all_st_str, $date, $code_map);
-    $interface_name = "$module::$interface";
+    $interface_name = ($module == '' ? 'All' : ($interface != '' ? $module.'::'.$interface : $module));
     $success_series_data = $fail_series_data = $success_time_series_data = $fail_time_series_data = array();
     $total_count = $fail_count = 0;
     foreach($data as $time_point=>$item)
@@ -145,7 +145,7 @@ function statistic($module, $interface, $date, $start_time, $offset)
         }
         $the_date = date('Y-m-d');
         $html_the_date = $date == $the_date ? "<b>$the_date</b>" : $the_date;
-        $date_btn_str .=  '<a href="/?date='."$the_date&$query".'" class="btn" type="button">'.$html_the_date.'</a>';
+        $date_btn_str .=  '<a href="/?fn=statistic&date='."$the_date&$query".'" class="btn" type="button">'.$html_the_date.'</a>';
         
         $module_str ='';
         foreach(\Statistics\Lib\Cache::$modulesDataCache as $mod => $interfaces)
@@ -155,13 +155,13 @@ function statistic($module, $interface, $date, $start_time, $offset)
                     continue;
                 }
                 $module_str .= '<li><a href="/?fn=statistic&module='.$mod.'">'.$mod.'</a></li>';
-                if($module == $mod)
-                {
+                //if($module == $mod)
+                //{
                     foreach ($interfaces as $if)
                     {
                         $module_str .= '<li>&nbsp;&nbsp;<a href="/?fn=statistic&module='.$mod.'&interface='.$if.'">'.$if.'</a></li>';
                     }
-                }
+                //}
         }
         
         if( \Statistics\Lib\Cache::$lastFailedIpArray)

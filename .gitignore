@@ -2,3 +2,7 @@ logs
 .buildpath
 .project
 .settings
+vendor
+composer.lock
+Applications/Statistics/Config/Cache
+Applications/Statistics/data

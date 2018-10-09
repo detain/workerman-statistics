@@ -158,22 +158,26 @@ class StatisticProvider extends Worker
      */
     protected function getStatistic($date, $module, $interface)
     {
-        if(empty($module) || empty($interface))
-        {
-            return '';
-        }
 		// Log file
-        $log_file = Config::$dataPath . $this->statisticDir."{$module}/{$interface}.{$date}";
-        
+               if ($module != '') {
+                       if ($interface != '') {
+                               $files = [Config::$dataPath . $this->statisticDir."{$module}/{$interface}.{$date}"];
+                       } else {
+                               $files = glob(Config::$dataPath . $this->statisticDir.'/'.$module.'/*.'.$date);
+                       }
+               } else {
+                        $files = glob(Config::$dataPath . $this->statisticDir.'/*/*.'.$date);
+               }
+               // Preprocess statistics, one line every 5 minutes
+               // [time=>[ip=>['suc_count'=>xx, 'suc_cost_time'=>xx, 'fail_count'=>xx, 'fail_cost_time'=>xx, 'code_map'=>[code=>count, ..], ..], ..]
+               $statistics_data = array();
+               foreach ($files as $log_file) {
         $handle = @fopen($log_file, 'r');
         if(!$handle)
         {
-            return '';
+            continue;
         }
         
-		// Preprocess statistics, one line every 5 minutes
-        // [time=>[ip=>['suc_count'=>xx, 'suc_cost_time'=>xx, 'fail_count'=>xx, 'fail_cost_time'=>xx, 'code_map'=>[code=>count, ..], ..], ..]
-        $statistics_data = array();
         while(!feof($handle))
         {
             $line = fgets($handle, 4096);
@@ -220,6 +224,11 @@ class StatisticProvider extends Worker
         } // end while
         
         fclose($handle);
+               }
+               if (count($statistics_data) == 0)
+               {
+                       return '';
+               }
         ksort($statistics_data);
         
 		// Organize data

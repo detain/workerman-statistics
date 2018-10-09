@@ -42,7 +42,6 @@
 				<strong><?php echo $err_msg;?></strong> 
 			</div>
 		<?php }?>
-		<?php if($module && $interface){?>
 			<div class="row clearfix">
 				<div class="col-md-12 column text-center">
 					<?php echo $date_btn_str;?>
@@ -56,7 +55,6 @@
 				<div class="col-md-12 column height-400" id="time-container" >
 				</div>
 			</div>
-			<?php if($module && $interface){?>
 			<script>
 			Highcharts.setOptions({
 				global: {
@@ -179,7 +177,6 @@
 					}]
 				});
 			</script>
-			<?php }?>
 			<table class="table table-hover table-condensed table-bordered">
 				<thead>
 					<tr>
@@ -190,7 +187,6 @@
 				<?php echo $table_data;?>
 				</tbody>
 			</table>
-			<?php }?>
 		</div>
 	</div>
 </div>
