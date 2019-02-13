@@ -49,13 +49,15 @@
 					<?php echo $date_btn_str;?>
 				</div>
 			</div>
-			<div class="row clearfix">
-				<div class="col-md-6 column height-400" id="suc-pie">
-				</div>
-				<div class="col-md-6 column height-400" id="code-pie">
-				</div>
-			</div>
-			<div class="row clearfix">
+            <div class="row clearfix">
+                <div class="col-md-6 column height-400" id="suc-pie">
+                </div>
+                <div class="col-md-6 column height-400" id="code-pie">
+                </div>
+            </div>
+            <div class="row clearfix" id="module-pie-container">
+            </div>
+ 			<div class="row clearfix">
 				<div class="col-md-12 column height-400" id="req-container" >
 				</div>
 			</div>
@@ -69,54 +71,80 @@ Highcharts.setOptions({
 		useUTC: false
 	}
 });
-	$('#suc-pie').highcharts({
-		chart: {
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			plotShadow: false
-		},
-		title: {
-			text: '<?php echo $date;?> Availability'
-		},
-		tooltip: {
-			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: true,
-				cursor: 'pointer',
-				dataLabels: {
-					enabled: true,
-					color: '#000000',
-					connectorColor: '#000000',
-					format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-				}
-			}
-		},
-		credits: {
-			enabled: false,
-		},
-		series: [{
-			type: 'pie',
-			name: 'Availability',
-			data: [
-				{
-					name: 'Available',
-					y: <?php echo $global_rate;?>,
-					sliced: true,
-					selected: true,
-					color: '#2f7ed8'
-				},
-				{
-					name: 'Unavailable',
-					y: <?php echo (100-$global_rate);?>,
-					sliced: true,
-					selected: true,
-					color: '#910000'
-				}
-			]
-		}]
-	});
+    var module_config, suc_config = {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: '<?php echo $date;?> Availability'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        credits: {
+            enabled: false,
+        },
+        series: [{
+            type: 'pie',
+            name: 'Availability',
+            data: [
+                {
+                    name: 'Available',
+                    y: <?php echo $global_rate;?>,
+                    sliced: true,
+                    selected: true,
+                    color: '#2f7ed8'
+                },
+                {
+                    name: 'Unavailable',
+                    y: <?php echo (100-$global_rate);?>,
+                    sliced: true,
+                    selected: true,
+                    color: '#910000'
+                }
+            ]
+        }]
+    };
+	$('#suc-pie').highcharts(suc_config);
+    <?php
+    $idx = 0;
+    $colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'];
+    
+    foreach ($moduleData as $module => $module_global_rate) {
+        $id = 'module-pie-'.$module;
+        if ($idx % 5 == 0) {
+            $class ='col-md-offset-1 col-md-2';
+        } else {
+            $class = 'col-md-2';
+        }
+        $idx++;
+        echo "
+module_config = suc_config;
+module_config.title.text = '{$module} Availability';
+module_config.series[0].data[0].color = '{$colors[$idx * 2]}';
+module_config.series[0].data[0].y = {$module_global_rate};
+module_config.series[0].data[0].color = '{$colors[($idx * 2) + 1]}';
+module_config.series[0].data[1].y = 100 - {$module_global_rate};
+\$('#module-pie-container').append('<div class=\"{$class} column height-210\" id=\"{$id}\"></div>');
+\$('#{$id}').highcharts(module_config);
+";
+    }
+    ?>
+    
 	$('#code-pie').highcharts({
 		chart: {
 			plotBackgroundColor: null,

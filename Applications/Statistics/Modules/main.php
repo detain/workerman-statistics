@@ -56,6 +56,51 @@ function main($module, $interface, $date, $start_time, $offset)
     
 	// 总体Success rate
     $global_rate =  $total_count ? round((($total_count - $fail_count)/$total_count)*100, 4) : 100;
+    
+    global $moduleData;
+    $moduleData = [];
+    foreach (glob(__DIR__.'/../data/statistic/statistic/*') as $path) {
+        $module = basename($path);    
+        $interface = '';
+        multiRequestStAndModules($module, $interface, $date);
+        $module_all_st_str = '';
+        if(is_array(\Statistics\Lib\Cache::$statisticDataCache['statistic']))
+        {
+            foreach(\Statistics\Lib\Cache::$statisticDataCache['statistic'] as $ip=>$st_str)
+            {
+                $module_all_st_str .= $st_str;
+            }
+        }
+        $module_code_map = array();
+        $module_data = formatSt($module_all_st_str, $date, $module_code_map);
+        $module_interface_name = 'Overall';
+        $module_success_series_data = $module_fail_series_data = $module_success_time_series_data = $module_fail_time_series_data = array();
+        $module_total_count = $module_fail_count = 0;
+        foreach($module_data as $module_time_point=>$module_item)
+        {
+            if($module_item['total_count'])
+            {
+                $module_success_series_data[] = "[".($module_time_point*1000).",{$module_item['total_count']}]";
+                $module_total_count += $module_item['total_count'];
+            }
+            $module_fail_series_data[] = "[".($module_time_point*1000).",{$module_item['fail_count']}]";
+            $module_fail_count += $module_item['fail_count'];
+            if($module_item['total_avg_time'])
+            {
+                $module_success_time_series_data[] = "[".($module_time_point*1000).",{$module_item['total_avg_time']}]";
+            }
+            $module_fail_time_series_data[] = "[".($module_time_point*1000).",{$module_item['fail_avg_time']}]";
+        }
+        $module_success_series_data = implode(',', $module_success_series_data);
+        $module_fail_series_data = implode(',', $module_fail_series_data);
+        $module_success_time_series_data = implode(',', $module_success_time_series_data);
+        $module_fail_time_series_data = implode(',', $module_fail_time_series_data);
+        
+        // 总体Success rate
+        $module_global_rate =  $module_total_count ? round((($module_total_count - $module_fail_count)/$module_total_count)*100, 4) : 100;        
+        $moduleData[$module] = $module_global_rate;
+    }
+    
 	// Return Code Distribution
     $code_pie_data = '';
     $code_pie_array = array(); 
