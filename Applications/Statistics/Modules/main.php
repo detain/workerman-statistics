@@ -264,7 +264,7 @@ function formatSt($str, $date, &$code_map)
             continue;
         }
         $time_line = $line_data[1];
-        $time_line = ceil($time_line/300)*300;
+        $time_line = intval(ceil($time_line/300)*300);
         $suc_count = $line_data[2];
         $suc_cost_time = $line_data[3];
         $fail_count = $line_data[4];
@@ -274,10 +274,10 @@ function formatSt($str, $date, &$code_map)
         {
             $st_data[$time_line] = array('suc_count'=>0, 'suc_cost_time'=>0, 'fail_count'=>0, 'fail_cost_time'=>0);
         }
-        $st_data[$time_line]['suc_count'] += $suc_count;
-        $st_data[$time_line]['suc_cost_time'] += $suc_cost_time;
-        $st_data[$time_line]['fail_count'] += $fail_count;
-        $st_data[$time_line]['fail_cost_time'] += $fail_cost_time;
+        $st_data[$time_line]['suc_count'] += intval($suc_count);
+        $st_data[$time_line]['suc_cost_time'] += intval($suc_cost_time);
+        $st_data[$time_line]['fail_count'] += intval($fail_count);
+        $st_data[$time_line]['fail_cost_time'] += intval($fail_cost_time);
         
         if(is_array($tmp_code_map))
         {
