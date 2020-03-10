@@ -16,7 +16,6 @@ require_once __DIR__ . '/loader.php';
 use Bootstrap\StatisticProvider;
 use Bootstrap\StatisticWorker;
 use \Workerman\Worker;
-use \Workerman\WebServer;
 
 // recv udp broadcast
 $udp_finder = new Worker("Text://0.0.0.0:55858");
@@ -24,24 +23,24 @@ $udp_finder->name = 'StatisticFinder';
 $udp_finder->transport = 'udp';
 $udp_finder->onMessage = function ($connection, $data)
 {
-    $data = json_decode($data, true);
-    if(empty($data))
-    {
-        return false;
-    }
+	$data = json_decode($data, true);
+	if(empty($data))
+	{
+		return false;
+	}
 
-    // 无法解析的包
-    if(empty($data['cmd']) || $data['cmd'] != 'REPORT_IP' )
-    {
-        return false;
-    }
+	// 无法解析的包
+	if(empty($data['cmd']) || $data['cmd'] != 'REPORT_IP' )
+	{
+		return false;
+	}
 
-    // response
-    return $connection->send(json_encode(array('result'=>'ok')));
+	// response
+	return $connection->send(json_encode(array('result'=>'ok')));
 };
 
 // Run the runAll method if it is not started in the root directory
 if(!defined('GLOBAL_START'))
 {
-    Worker::runAll();
+	Worker::runAll();
 }

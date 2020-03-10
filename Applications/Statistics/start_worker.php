@@ -16,7 +16,6 @@ require_once __DIR__ . '/loader.php';
 use Bootstrap\StatisticProvider;
 use Bootstrap\StatisticWorker;
 use \Workerman\Worker;
-use \Workerman\WebServer;
 
 // StatisticWorker
 $statistic_worker = new StatisticWorker("Statistic://0.0.0.0:55656");
@@ -26,5 +25,5 @@ $statistic_worker->name = 'StatisticWorker';
 // Run the runAll method if it is not started in the root directory
 if(!defined('GLOBAL_START'))
 {
-    Worker::runAll();
+	Worker::runAll();
 }
