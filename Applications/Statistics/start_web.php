@@ -23,9 +23,13 @@ use Workerman\Connection\TcpConnection;
 $web = new Worker('http://0.0.0.0:55757');
 $web->name = 'StatisticWeb';
 
-define('WEBROOT', __DIR__ . '/Web');
+define('WEBROOT', realpath(__DIR__ . '/Web'));
 
 $web->onMessage = function (TcpConnection $connection, Request $request) {
+	$addr = explode(':', $connection->getRemoteAddress());
+	$_SERVER['REMOTE_ADDR'] = $addr[0];
+	$_GET = $request->get();
+	$_POST = $request->post();
 	$path = $request->path();
 	if ($path === '/') {
 		$connection->send(exec_php_file(WEBROOT.'/index.php'));

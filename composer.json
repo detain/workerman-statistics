@@ -4,6 +4,6 @@
     "homepage": "http://www.workerman.net",
     "license" : "MIT",
     "require": {
-        "workerman/workerman" : "~4.0.1"
+        "workerman/workerman" : "dev-master"
     }
 }
