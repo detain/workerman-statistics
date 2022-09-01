@@ -6,7 +6,7 @@ Need PHP version not less than 5.3, just need to install PHP Cli, no need to ins
 
 Example
 ========
-[Live Demo](http://www.workerman.net:55757/)
+[Live Demo](http://demos.workerman.net:55757/)
 
 Installation
 =========
@@ -48,5 +48,3 @@ Permission Validation
 * The administrator username and password are empty by default, that is, you can view the monitoring data without logging in.
 * If login authentication is required, set the administrator password in applications/Statistics/Config/Config.php
 
-
-[More please visit www.workerman.net](http://www.workerman.net/workerman-statistics)
